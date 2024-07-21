@@ -30,7 +30,7 @@ function FavoriteArtistsList() {
               <li key={artist.id} className="flex justify-between align-middle">
                 <span>{artist.name}</span>
                 <div
-                  className="flex justify-between align-middle cursor-pointer"
+                  className="flex justify-between items-center cursor-pointer"
                   onClick={() => handleRemoveArtist(artist.id)}
                 >
                   <FontAwesomeIcon
