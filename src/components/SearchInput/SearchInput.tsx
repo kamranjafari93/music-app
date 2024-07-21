@@ -3,6 +3,7 @@ import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons";
 import React, { useMemo, useState } from "react";
 import useSpotifySearch from "@/hooks/UseSpotifySearch";
 import { Album, Artist } from "@/types/spotify";
+import Link from "next/link";
 
 function SearchInput() {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -60,12 +61,11 @@ function SearchInput() {
                 <span className="text-sm text-gray-400 pl-2">Artists</span>
                 <ul>
                   {artists.map((artist) => (
-                    <li
-                      key={artist.id}
-                      className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded"
-                    >
-                      {artist.name}
-                    </li>
+                    <Link href={`/artist/${artist.id}`} key={artist.id}>
+                      <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
+                        {artist.name}
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               </>

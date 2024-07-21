@@ -11,7 +11,7 @@ export interface Artist {
   genres: string[];
   href: string;
   images: { width: number; height: number; url: string }[];
-  popular: number;
+  popularity: number;
   type: string;
   uri: string | null;
 }
