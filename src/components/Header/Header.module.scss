@@ -1,0 +1,10 @@
+@import "/src/styles/variables.scss";
+
+.mainHeader {
+  background-image: url('/images/music-bg.webp');
+  height: 18.25rem;
+
+  @media (min-width: $breakpoint-lg) {
+    height: 32rem;
+  }
+}

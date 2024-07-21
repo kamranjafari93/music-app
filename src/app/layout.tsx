@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,12 +10,14 @@ export const metadata: Metadata = {
   description: "Search artists and their albums",
 };
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div className={inter.className}>
-      <Component {...pageProps} />
-    </div>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
   );
 }
-
-export default MyApp;
