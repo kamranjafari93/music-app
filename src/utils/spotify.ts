@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {
+  Album,
   Artist,
   SpotifyAlbumsResponse,
   SpotifySearchResponse,
@@ -45,6 +46,19 @@ export const fetchArtistAlbums = async (
   const token = await fetchAccessToken();
   const response: AxiosResponse<SpotifyAlbumsResponse> = await axios.get(
     `https://api.spotify.com/v1/artists/${artistId}/albums`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data;
+};
+
+export const fetchAlbumById = async (albumId: string): Promise<Album> => {
+  const token = await fetchAccessToken();
+  const response: AxiosResponse<Album> = await axios.get(
+    `https://api.spotify.com/v1/albums/${albumId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

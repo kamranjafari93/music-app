@@ -120,27 +120,26 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
             <h2 className="text-lg font-bold mb-2">Albums</h2>
             <div className="flex flex-wrap flex-col md:flex-row ">
               {albums.map((album) => (
-                <article
-                  key={album.id}
-                  className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0"
-                >
-                  <div className="shrink-0">
-                    <Image
-                      src={album.images[0].url}
-                      alt={album.name}
-                      width={80}
-                      height={80}
-                    />
-                  </div>
-                  <div className="flex flex-col ml-4">
-                    <h1 className="text-sm font-bold mb-2">{album.name}</h1>
-                    <p className="text-xs text-gray-500 mb-3">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </p>
-                  </div>
-                </article>
+                <Link key={album.id} href={`/album/${album.id}`}>
+                  <article className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0">
+                    <div className="shrink-0">
+                      <Image
+                        src={album.images[0].url}
+                        alt={album.name}
+                        width={80}
+                        height={80}
+                      />
+                    </div>
+                    <div className="flex flex-col ml-4">
+                      <h1 className="text-sm font-bold mb-2">{album.name}</h1>
+                      <p className="text-xs text-gray-500 mb-3">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                      </p>
+                    </div>
+                  </article>
+                </Link>
               ))}
             </div>
           </div>

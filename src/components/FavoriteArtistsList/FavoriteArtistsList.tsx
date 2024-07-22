@@ -4,6 +4,7 @@ import { removeArtist } from "@/store/favoriteArtistsSlice";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import Link from "next/link";
 
 function FavoriteArtistsList() {
   const artists = useSelector(
@@ -27,8 +28,13 @@ function FavoriteArtistsList() {
         ) : (
           <ul>
             {artists.map((artist) => (
-              <li key={artist.id} className="flex justify-between align-middle">
-                <span>{artist.name}</span>
+              <li
+                key={artist.id}
+                className="flex justify-between align-middle border-b border-gray-200 py-2 last:border-0"
+              >
+                <Link href={`/artist/${artist.id}`}>
+                  <span className="text-blue-500">{artist.name}</span>
+                </Link>
                 <div
                   className="flex justify-between items-center cursor-pointer"
                   onClick={() => handleRemoveArtist(artist.id)}
@@ -37,7 +43,7 @@ function FavoriteArtistsList() {
                     icon={faHeart}
                     className="w-5 text-red-500"
                   />
-                  <span className="font-normal text-sm text-red-500">
+                  <span className="font-normal text-sm text-red-500 ml-1">
                     Remove
                   </span>
                 </div>
