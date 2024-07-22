@@ -37,6 +37,18 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
     return favArtists.some((artist) => artist.id === params.artistId);
   }, [favArtists, params.artistId]);
 
+  const artistDescription: string = useMemo(() => {
+    if (!artist) return "";
+
+    return `${artist.name} has ${artist.followers.total} followers on Spotify. Their popularity score on the platform is ${artist.popularity}. Their music spans genres such as ${artist.genres.join(", ")}.`;
+  }, [artist]);
+
+  const getAlbumDescription = (album: Album) => {
+    if (!album) return "";
+
+    return `Album ${album.name} was released on ${album.release_date}. It features a total of ${album.total_tracks} tracks.`;
+  };
+
   const toggleFavorite = (): void => {
     if (isAmongFavoriteArtists) {
       dispatch(removeArtist(params.artistId));
@@ -100,18 +112,7 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
           </div>
           <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
             <h1 className="text-xl font-bold mb-2">{artist.name}</h1>
-            <p className="text-sm text-gray-500 mb-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <p className="text-sm text-gray-500 mb-3">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
-            </p>
+            <p className="text-sm text-gray-500 mb-3">{artistDescription}</p>
           </div>
         </article>
 
@@ -120,25 +121,25 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
             <h2 className="text-lg font-bold mb-2">Albums</h2>
             <div className="flex flex-wrap flex-col md:flex-row ">
               {albums.map((album) => (
-                <Link key={album.id} href={`/album/${album.id}`}>
-                  <article className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0">
-                    <div className="shrink-0">
-                      <Image
-                        src={album.images[0].url}
-                        alt={album.name}
-                        width={80}
-                        height={80}
-                      />
-                    </div>
-                    <div className="flex flex-col ml-4">
-                      <h1 className="text-sm font-bold mb-2">{album.name}</h1>
-                      <p className="text-xs text-gray-500 mb-3">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                    </div>
-                  </article>
+                <Link
+                  href={`/album/${album.id}`}
+                  key={album.id}
+                  className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0"
+                >
+                  <div className="shrink-0">
+                    <Image
+                      src={album.images[0].url}
+                      alt={album.name}
+                      width={80}
+                      height={80}
+                    />
+                  </div>
+                  <div className="flex flex-col ml-4">
+                    <h1 className="text-sm font-bold mb-2">{album.name}</h1>
+                    <p className="text-xs text-gray-500 mb-3">
+                      {getAlbumDescription(album)}
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>

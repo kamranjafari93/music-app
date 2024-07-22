@@ -18,6 +18,12 @@ const AlbumPage = ({ params }: { params: { albumId: string } }) => {
     return album.tracks.items;
   }, [album, error, isLoading]);
 
+  const albumDescription: string = useMemo(() => {
+    if (!album) return "";
+
+    return `Album ${album.name} was released on ${album.release_date}. It features a total of ${album.total_tracks} tracks.`;
+  }, [album]);
+
   if (isLoading) return <div>Loading...</div>;
   if (error || !album) return <div>Error loading artist data</div>;
 
@@ -50,18 +56,7 @@ const AlbumPage = ({ params }: { params: { albumId: string } }) => {
           </div>
           <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
             <h1 className="text-xl font-bold mb-2">{album.name}</h1>
-            <p className="text-sm text-gray-500 mb-3">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <p className="text-sm text-gray-500 mb-3">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
-            </p>
+            <p className="text-sm text-gray-500 mb-3">{albumDescription}</p>
           </div>
         </article>
 
