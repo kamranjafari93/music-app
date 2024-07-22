@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { Artist, SpotifySearchResponse } from "@/types/spotify";
+import {
+  Artist,
+  SpotifyAlbumsResponse,
+  SpotifySearchResponse,
+} from "@/types/spotify";
 
 export const fetchAccessToken = async (): Promise<string> => {
   const response = await axios.get("/api/spotify-token");
@@ -26,6 +30,21 @@ export const fetchArtistById = async (artistId: string): Promise<Artist> => {
   const token = await fetchAccessToken();
   const response = await axios.get(
     `https://api.spotify.com/v1/artists/${artistId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data;
+};
+
+export const fetchArtistAlbums = async (
+  artistId: string,
+): Promise<SpotifyAlbumsResponse> => {
+  const token = await fetchAccessToken();
+  const response: AxiosResponse<SpotifyAlbumsResponse> = await axios.get(
+    `https://api.spotify.com/v1/artists/${artistId}/albums`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

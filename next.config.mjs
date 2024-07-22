@@ -7,6 +7,9 @@ const nextConfig = {
     SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
   },
   publicRuntimeConfig: {},
+  images: {
+    domains: ['i.scdn.co'],
+  },
 };
 
 export default nextConfig;

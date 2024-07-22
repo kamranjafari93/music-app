@@ -42,3 +42,13 @@ export interface SpotifySearchResponse {
     items: Album[];
   };
 }
+
+export interface SpotifyAlbumsResponse {
+  items: Album[];
+  href: string;
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string | null;
+  total: number;
+}
