@@ -75,12 +75,11 @@ function SearchInput() {
                 <span className="text-sm text-gray-400 pl-2">Albums</span>
                 <ul>
                   {albums.map((album) => (
-                    <li
-                      key={album.id}
-                      className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded"
-                    >
-                      {album.name}
-                    </li>
+                    <Link href={`/album/${album.id}`} key={album.id}>
+                      <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
+                        {album.name}
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               </>
