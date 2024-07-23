@@ -1,6 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { render, screen } from "./test-utils";
-import { albums, artists } from "@/mock/artist";
+import { artists } from "@/mock/artist";
+import { albums } from "@/mock/album";
 import ArtistComponent from "@/components/Artist/Artist";
 import { fireEvent } from "@testing-library/dom";
 import { Album } from "@/types/spotify";
@@ -21,7 +22,7 @@ vi.mock("@/hooks/useSpotifyGetArtistAlbums", () => ({
   })),
 }));
 
-describe("Artist Page", () => {
+describe("Artist Component", () => {
   test("Favorite the artist and undo it", () => {
     render(<ArtistComponent artistId={artists[0].id} />);
 

@@ -60,6 +60,7 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
           <article className="mt-14 flex flex-col md:flex-row">
             <div className="shrink-0">
               <Image
+                data-testid="albumImagePrimary"
                 src={album.images[0].url}
                 alt={album.name}
                 width={200}
