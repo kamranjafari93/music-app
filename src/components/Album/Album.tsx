@@ -42,15 +42,22 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
   return (
     <main>
       <Header isMinimal={true} />
-      {isLoading && <BulletList />}
+      {isLoading && <BulletList aria-label="Loading" />}
       {album && (
         <section className="w-11/12 max-w-3xl mt-10 mx-auto flex flex-col">
-          <nav className="flex justify-between items-center">
+          <nav
+            className="flex justify-between items-center"
+            aria-label="Album navigation"
+          >
             <Link href={`/artist/${album.artists[0].id}`}>
-              <div>
+              <div
+                role="button"
+                aria-label={`Go back to artist ${album.artists[0].name}`}
+              >
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="text-gray-500 w-5"
+                  aria-hidden="true"
                 />
                 <span className="text-sm text-gray-400 pl-2">back</span>
               </div>
@@ -65,6 +72,7 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
                 alt={album.name}
                 width={200}
                 height={200}
+                aria-label={`Image of album ${album.name}`}
               />
             </div>
             <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
@@ -82,6 +90,7 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
                     key={track.id}
                     className="text-sm text-gray-500 mb-1"
                     data-testid={`track-${track.id}`}
+                    role="listitem"
                   >
                     {track.name}
                   </li>

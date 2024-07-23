@@ -38,10 +38,12 @@ function FavoriteArtistsList() {
                 <div
                   className="flex justify-between items-center cursor-pointer"
                   onClick={() => handleRemoveArtist(artist.id)}
+                  aria-label={`Remove ${artist.name} from favourites`}
                 >
                   <FontAwesomeIcon
                     icon={faHeart}
                     className="w-5 text-red-500"
+                    aria-hidden="true"
                   />
                   <span className="font-normal text-sm text-red-500 ml-1">
                     Remove

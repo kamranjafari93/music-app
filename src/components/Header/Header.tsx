@@ -10,6 +10,7 @@ const Header: React.FC<HeaderProps> = ({ isMinimal = false }) => {
   return (
     <header
       className={`bg-cover bg-center flex flex-col items-center justify-center ${isMinimal && c.minimalHeader} ${c.mainHeader}`}
+      role="banner"
     >
       {!isMinimal && (
         <h1 className="text-2xl text-white font-medium mt-0 mb-4">

@@ -81,15 +81,19 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
   return (
     <main>
       <Header isMinimal={true} />
-      {isLoading && <BulletList />}
+      {isLoading && <BulletList aria-label="Loading" />}
       {artist && (
         <section className="w-11/12 max-w-3xl mt-10 mx-auto flex flex-col">
-          <nav className="flex justify-between items-center">
+          <nav
+            className="flex justify-between items-center"
+            aria-label="Artist navigation"
+          >
             <Link href={"/"}>
-              <div>
+              <div role="button" aria-label="Go back to the home page">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="text-gray-500 w-5"
+                  aria-hidden="true"
                 />
                 <span className="text-sm text-gray-400 pl-2">back</span>
               </div>
@@ -98,10 +102,16 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
               data-testid="artistFavoriteBox"
               className="flex justify-between items-center cursor-pointer"
               onClick={toggleFavorite}
+              aria-label={
+                isAmongFavoriteArtists
+                  ? `Remove ${artist.name} as favorite`
+                  : `Add ${artist.name} as favorite`
+              }
             >
               <FontAwesomeIcon
                 icon={isAmongFavoriteArtists ? faHeart : faHeartRegular}
                 className={`w-5 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
+                aria-hidden="true"
               />
               <span
                 data-testid="artistFavouriteStatus"
@@ -122,6 +132,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
                 alt={artist.name}
                 width={200}
                 height={200}
+                aria-label={`Image of ${artist.name}`}
               />
             </div>
             <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
@@ -138,7 +149,8 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
                   <Link
                     href={`/album/${album.id}`}
                     key={album.id}
-                    className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0"
+                    className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0 hover:bg-gray-100"
+                    aria-label={`View details of album ${album.name}`}
                   >
                     <div className="shrink-0">
                       <Image
@@ -147,6 +159,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
                         alt={album.name}
                         width={80}
                         height={80}
+                        aria-label={`Image of album ${album.name}`}
                       />
                     </div>
                     <div className="flex flex-col ml-4">

@@ -39,6 +39,7 @@ function SearchInput() {
         <FontAwesomeIcon
           icon={faSearch}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5"
+          aria-hidden="true"
         />
         <input
           data-testid="searchInput"
@@ -47,6 +48,8 @@ function SearchInput() {
           className="w-full bg-white p-3 pl-10 rounded-t-md rounded-b"
           value={searchTerm}
           onChange={handleChange}
+          role="searchbox"
+          aria-label="Search for music by artist or album"
         />
         {searchTerm && (
           <FontAwesomeIcon
@@ -54,17 +57,30 @@ function SearchInput() {
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 cursor-pointer"
             onClick={() => setSearchTerm("")}
             data-testid="searchInputClearIcon"
+            aria-label="Clear search input"
           />
         )}
         {canShowSuggestions && (
-          <div className="absolute w-full mt-1.5 bg-white py-3 px-1 rounded-b-md rounded-t shadow-xl">
+          <div
+            className="absolute w-full mt-1.5 bg-white py-3 px-1 rounded-b-md rounded-t shadow-xl"
+            role="listbox"
+          >
             {artistsSlice.length > 0 && (
               <>
-                <span className="text-sm text-gray-400 pl-2">Artists</span>
-                <ul>
+                <span
+                  className="text-sm text-gray-400 pl-2"
+                  role="presentation"
+                >
+                  Artists
+                </span>
+                <ul role="group" aria-label="Artists">
                   {artistsSlice.map((artist) => (
                     <Link href={`/artist/${artist.id}`} key={artist.id}>
-                      <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
+                      <li
+                        className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded"
+                        role="option"
+                        aria-selected="false"
+                      >
                         {artist.name}
                       </li>
                     </Link>
@@ -74,11 +90,20 @@ function SearchInput() {
             )}
             {albumsSlice.length > 0 && (
               <>
-                <span className="text-sm text-gray-400 pl-2">Albums</span>
-                <ul>
+                <span
+                  className="text-sm text-gray-400 pl-2"
+                  role="presentation"
+                >
+                  Albums
+                </span>
+                <ul role="group" aria-label="Albums">
                   {albumsSlice.map((album) => (
                     <Link href={`/album/${album.id}`} key={album.id}>
-                      <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
+                      <li
+                        className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded"
+                        role="option"
+                        aria-selected="false"
+                      >
                         {album.name}
                       </li>
                     </Link>
