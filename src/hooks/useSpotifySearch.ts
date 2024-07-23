@@ -39,7 +39,7 @@ const useSpotifySearch = (
       artists: [],
       albums: [],
       error: response.error,
-      isLoading: false,
+      isLoading: response.isLoading,
     };
   }
 

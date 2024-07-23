@@ -13,7 +13,7 @@ function SearchInput() {
   );
 
   if (error) {
-    console.error("error");
+    console.error(error);
     // Send issue to Sentry
   }
 

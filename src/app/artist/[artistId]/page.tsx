@@ -13,6 +13,9 @@ import { addArtist, removeArtist } from "@/store/favoriteArtistsSlice";
 import Image from "next/image";
 import useSpotifyGetArtistAlbums from "@/hooks/useSpotifyGetArtistAlbums";
 import { Album } from "@/types/spotify";
+import CustomError from "@/components/Error/CustomError";
+import NotFound from "@/components/NotFound/NotFound";
+import { BulletList } from "react-content-loader";
 
 const ArtistPage = ({ params }: { params: { artistId: string } }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -21,16 +24,12 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
     (state: RootState) => state.favoriteArtists.artists,
   );
 
-  const {
-    data: artist,
-    error: artist_error,
-    isLoading: artist_is_loading,
-  } = useSpotifyGetArtist(params.artistId);
+  const { artist, error, isLoading } = useSpotifyGetArtist(params.artistId);
 
   const {
-    data: albums_object,
+    albums,
     error: albums_errors,
-    isLoading: albums_is_loading,
+    isLoading: albums_isLoading,
   } = useSpotifyGetArtistAlbums(params.artistId);
 
   const isAmongFavoriteArtists: boolean = useMemo(() => {
@@ -57,95 +56,104 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
     }
   };
 
-  const albums: Album[] = useMemo(() => {
-    if (albums_errors || albums_is_loading || !albums_object) return [];
+  const albumsSlice: Album[] = useMemo(() => {
+    return albums.slice(0, 6);
+  }, [albums]);
 
-    return albums_object.items.slice(0, 6);
-  }, [albums_errors, albums_is_loading, albums_object]);
+  if (albums_errors) {
+    console.error(albums_errors);
+    // Send issue to Sentry
+  }
 
-  if (artist_is_loading) return <div>Loading...</div>;
-  if (artist_error || !artist) return <div>Error loading artist data</div>;
+  if (error) {
+    console.error(albums_errors);
+    // Send issue to Sentry
 
-  console.log("artist", artist);
-  console.log("albums", albums, albums_errors, albums_is_loading);
+    return <CustomError />;
+  }
+
+  if (!artist && !isLoading) return <NotFound />;
 
   return (
     <main>
       <Header isMinimal={true} />
-      <section className="w-11/12 max-w-3xl mt-10 mx-auto flex flex-col">
-        <nav className="flex justify-between items-center">
-          <Link href={"/"}>
-            <div>
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                className="text-gray-500 w-5"
-              />
-              <span className="text-sm text-gray-400 pl-2">back</span>
-            </div>
-          </Link>
-          <div
-            className="flex justify-between items-center cursor-pointer"
-            onClick={toggleFavorite}
-          >
-            <FontAwesomeIcon
-              icon={isAmongFavoriteArtists ? faHeart : faHeartRegular}
-              className={`w-5 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
-            />
-            <span
-              className={`font-normal text-sm ml-1 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
+      {isLoading && <BulletList />}
+      {artist && (
+        <section className="w-11/12 max-w-3xl mt-10 mx-auto flex flex-col">
+          <nav className="flex justify-between items-center">
+            <Link href={"/"}>
+              <div>
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  className="text-gray-500 w-5"
+                />
+                <span className="text-sm text-gray-400 pl-2">back</span>
+              </div>
+            </Link>
+            <div
+              className="flex justify-between items-center cursor-pointer"
+              onClick={toggleFavorite}
             >
-              {isAmongFavoriteArtists
-                ? "Remove as favorite"
-                : "Add as favorite"}
-            </span>
-          </div>
-        </nav>
-
-        <article className="mt-14 flex flex-col md:flex-row">
-          <div className="shrink-0">
-            <Image
-              src={artist.images[0].url}
-              alt={artist.name}
-              width={200}
-              height={200}
-            />
-          </div>
-          <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
-            <h1 className="text-xl font-bold mb-2">{artist.name}</h1>
-            <p className="text-sm text-gray-500 mb-3">{artistDescription}</p>
-          </div>
-        </article>
-
-        {albums.length > 0 && (
-          <div className="flex flex-col mt-14">
-            <h2 className="text-lg font-bold mb-2">Albums</h2>
-            <div className="flex flex-wrap flex-col md:flex-row ">
-              {albums.map((album) => (
-                <Link
-                  href={`/album/${album.id}`}
-                  key={album.id}
-                  className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0"
-                >
-                  <div className="shrink-0">
-                    <Image
-                      src={album.images[0].url}
-                      alt={album.name}
-                      width={80}
-                      height={80}
-                    />
-                  </div>
-                  <div className="flex flex-col ml-4">
-                    <h1 className="text-sm font-bold mb-2">{album.name}</h1>
-                    <p className="text-xs text-gray-500 mb-3">
-                      {getAlbumDescription(album)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+              <FontAwesomeIcon
+                icon={isAmongFavoriteArtists ? faHeart : faHeartRegular}
+                className={`w-5 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
+              />
+              <span
+                className={`font-normal text-sm ml-1 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
+              >
+                {isAmongFavoriteArtists
+                  ? "Remove as favorite"
+                  : "Add as favorite"}
+              </span>
             </div>
-          </div>
-        )}
-      </section>
+          </nav>
+
+          <article className="mt-14 flex flex-col md:flex-row">
+            <div className="shrink-0">
+              <Image
+                src={artist.images[0].url}
+                alt={artist.name}
+                width={200}
+                height={200}
+              />
+            </div>
+            <div className="flex flex-col mt-6 md:mt-0 md:ml-12">
+              <h1 className="text-xl font-bold mb-2">{artist.name}</h1>
+              <p className="text-sm text-gray-500 mb-3">{artistDescription}</p>
+            </div>
+          </article>
+
+          {!albums_isLoading && albumsSlice.length > 0 && (
+            <div className="flex flex-col mt-14">
+              <h2 className="text-lg font-bold mb-2">Albums</h2>
+              <div className="flex flex-wrap flex-col md:flex-row ">
+                {albumsSlice.map((album) => (
+                  <Link
+                    href={`/album/${album.id}`}
+                    key={album.id}
+                    className="flex mb-6 md:odd:pr-3 basis-2/4 grow-1 shrink-0"
+                  >
+                    <div className="shrink-0">
+                      <Image
+                        src={album.images[0].url}
+                        alt={album.name}
+                        width={80}
+                        height={80}
+                      />
+                    </div>
+                    <div className="flex flex-col ml-4">
+                      <h1 className="text-sm font-bold mb-2">{album.name}</h1>
+                      <p className="text-xs text-gray-500 mb-3">
+                        {getAlbumDescription(album)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
     </main>
   );
 };
