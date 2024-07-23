@@ -41,6 +41,7 @@ function SearchInput() {
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5"
         />
         <input
+          data-testid="searchInput"
           type="text"
           placeholder="Search by artist or album"
           className="w-full bg-white p-3 pl-10 rounded-t-md rounded-b"
@@ -52,6 +53,7 @@ function SearchInput() {
             icon={faClose}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 cursor-pointer"
             onClick={() => setSearchTerm("")}
+            data-testid="searchInputClearIcon"
           />
         )}
         {canShowSuggestions && (
