@@ -21,7 +21,7 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
   const tracks: Track[] = useMemo(() => {
     if (error || isLoading || !album || !album.tracks) return [];
 
-    return album.tracks.items;
+    return album.tracks;
   }, [album, error, isLoading]);
 
   const albumDescription: string = useMemo(() => {
@@ -78,7 +78,11 @@ const AlbumComponent = ({ albumId }: AlbumComponentProps) => {
               <h2 className="text-lg font-bold mb-2">Tracks</h2>
               <ul>
                 {tracks.map((track) => (
-                  <li key={track.id} className="text-sm text-gray-500 mb-1">
+                  <li
+                    key={track.id}
+                    className="text-sm text-gray-500 mb-1"
+                    data-testid={`track-${track.id}`}
+                  >
                     {track.name}
                   </li>
                 ))}

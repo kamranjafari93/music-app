@@ -1,5 +1,6 @@
 import { Album } from "@/types/spotify";
 import { artists } from "@/mock/artist";
+import { tracks } from "@/mock/track";
 
 export const albums: Album[] = [
   {
@@ -47,5 +48,6 @@ export const albums: Album[] = [
     total_tracks: 11,
     type: "album",
     uri: "spotify:album:0XY0qeZ7czMgtb340QJRxK",
+    tracks: tracks,
   },
 ];

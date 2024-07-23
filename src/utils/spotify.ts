@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import {
-  Album,
   Artist,
+  SpotifyAlbumResponse,
   SpotifyAlbumsResponse,
   SpotifySearchResponse,
 } from "@/types/spotify";
@@ -54,9 +54,11 @@ export const fetchArtistAlbums = async (
   return response.data;
 };
 
-export const fetchAlbumById = async (albumId: string): Promise<Album> => {
+export const fetchAlbumById = async (
+  albumId: string,
+): Promise<SpotifyAlbumResponse> => {
   const token = await fetchAccessToken();
-  const response: AxiosResponse<Album> = await axios.get(
+  const response: AxiosResponse<SpotifyAlbumResponse> = await axios.get(
     `${SPOTIFY_BASE_URL}albums/${albumId}`,
     {
       headers: {

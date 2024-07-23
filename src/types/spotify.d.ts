@@ -13,7 +13,7 @@ export interface Artist {
   images: { width: number; height: number; url: string }[];
   popularity: number;
   type: string;
-  uri: string | null;
+  uri: string;
 }
 
 export interface Album {
@@ -32,15 +32,7 @@ export interface Album {
   total_tracks: number;
   type: string;
   uri: string;
-  tracks?: {
-    items: Track[];
-    href: string;
-    limit: number;
-    next: string;
-    offset: number;
-    previous: string | null;
-    total: number;
-  };
+  tracks?: Track[];
 }
 
 export interface Track {
@@ -65,8 +57,8 @@ export interface Track {
   };
   href: string;
   id: string;
-  is_playable: boolean;
-  linked_from: {
+  is_playable?: boolean;
+  linked_from?: {
     external_urls: {
       spotify: string;
     };
@@ -75,7 +67,7 @@ export interface Track {
     type: string;
     uri: string;
   };
-  restrictions: {
+  restrictions?: {
     reason: string;
   };
   name: string;
@@ -103,4 +95,15 @@ export interface SpotifyAlbumsResponse {
   offset: number;
   previous: string | null;
   total: number;
+}
+export interface SpotifyAlbumResponse extends Omit<Album, "tracks"> {
+  tracks: {
+    items: Track[];
+    href: string;
+    limit: number;
+    next: string;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
 }
