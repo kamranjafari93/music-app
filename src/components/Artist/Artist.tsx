@@ -95,6 +95,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
               </div>
             </Link>
             <div
+              data-testid="artistFavoriteBox"
               className="flex justify-between items-center cursor-pointer"
               onClick={toggleFavorite}
             >
@@ -103,6 +104,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
                 className={`w-5 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
               />
               <span
+                data-testid="artistFavouriteStatus"
                 className={`font-normal text-sm ml-1 ${isAmongFavoriteArtists ? "text-red-500" : "text-gray-400"}`}
               >
                 {isAmongFavoriteArtists
@@ -115,6 +117,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
           <article className="mt-14 flex flex-col md:flex-row">
             <div className="shrink-0">
               <Image
+                data-testid="artistImagePrimary"
                 src={artist.images[0].url}
                 alt={artist.name}
                 width={200}
@@ -139,6 +142,7 @@ const ArtistComponent = ({ artistId }: ArtistComponentProps) => {
                   >
                     <div className="shrink-0">
                       <Image
+                        data-testid={`artistAlbumImage-${album.id}`}
                         src={album.images[0].url}
                         alt={album.name}
                         width={80}

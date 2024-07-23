@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "vitest"
+    "test": "vitest --reporter verbose"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
