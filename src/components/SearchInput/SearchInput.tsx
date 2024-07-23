@@ -1,37 +1,37 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faSearch } from "@fortawesome/free-solid-svg-icons";
 import React, { useMemo, useState } from "react";
-import useSpotifySearch from "@/hooks/UseSpotifySearch";
+import useSpotifySearch from "@/hooks/useSpotifySearch";
 import { Album, Artist } from "@/types/spotify";
 import Link from "next/link";
 
 function SearchInput() {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const { data, error, isLoading } = useSpotifySearch(
+  const { artists, albums, error, isLoading } = useSpotifySearch(
     searchTerm,
     "artist,album",
   );
 
-  console.log(data, error, isLoading);
+  if (error) {
+    console.error("error");
+    // Send issue to Sentry
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const canShowSuggestions: boolean = useMemo(() => {
-    return Boolean(
-      (data?.albums?.items && data.albums.items.length > 0) ||
-        (data?.artists?.items && data.artists.items.length > 0),
-    );
-  }, [data]);
+    return Boolean(!isLoading && (artists.length > 0 || albums.length > 0));
+  }, [isLoading, artists, albums]);
 
-  const artists: Artist[] = useMemo(() => {
-    return data?.artists?.items ? data.artists.items.slice(0, 2) : [];
-  }, [data]);
+  const artistsSlice: Artist[] = useMemo(() => {
+    return artists.slice(0, 2);
+  }, [artists]);
 
-  const albums: Album[] = useMemo(() => {
-    return data?.albums?.items ? data.albums.items.slice(0, 2) : [];
-  }, [data]);
+  const albumsSlice: Album[] = useMemo(() => {
+    return albums.slice(0, 2);
+  }, [albums]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
@@ -56,11 +56,11 @@ function SearchInput() {
         )}
         {canShowSuggestions && (
           <div className="absolute w-full mt-1.5 bg-white py-3 px-1 rounded-b-md rounded-t shadow-xl">
-            {artists.length > 0 && (
+            {artistsSlice.length > 0 && (
               <>
                 <span className="text-sm text-gray-400 pl-2">Artists</span>
                 <ul>
-                  {artists.map((artist) => (
+                  {artistsSlice.map((artist) => (
                     <Link href={`/artist/${artist.id}`} key={artist.id}>
                       <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
                         {artist.name}
@@ -70,11 +70,11 @@ function SearchInput() {
                 </ul>
               </>
             )}
-            {albums.length > 0 && (
+            {albumsSlice.length > 0 && (
               <>
                 <span className="text-sm text-gray-400 pl-2">Albums</span>
                 <ul>
-                  {albums.map((album) => (
+                  {albumsSlice.map((album) => (
                     <Link href={`/album/${album.id}`} key={album.id}>
                       <li className="text-sm mb-0.5 p-1.5 cursor-pointer hover:bg-gray-200 rounded">
                         {album.name}
