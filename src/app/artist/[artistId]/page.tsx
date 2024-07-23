@@ -66,7 +66,7 @@ const ArtistPage = ({ params }: { params: { artistId: string } }) => {
   }
 
   if (error) {
-    console.error(albums_errors);
+    console.error(error);
     // Send issue to Sentry
 
     return <CustomError />;
